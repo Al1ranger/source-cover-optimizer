@@ -107,7 +107,7 @@ python -m venv .venv
 .venv/Scripts/genvm-lint check contracts/SourceCoverOptimizer.py --json
 .venv/Scripts/python -m pytest tests -q
 npm ci
-node --test tests/transport.test.cjs
+node --test tests/transport.test.cjs tests/cli_string_args.test.cjs
 npm install -g genlayer@0.39.2
 genlayer network set studionet
 genlayer account use YOUR_ENCRYPTED_TEST_KEYSTORE
@@ -128,6 +128,13 @@ production supplies a fresh transaction message.
 Use SDK views to pass addresses explicitly as strings: CLI 0.39.2 may coerce a
 hex address into an address-typed argument when `pack_key` expects a string.
 
+A single RFC CSV also looks like a number to CLI 0.39.2. With Node 24+, the
+process-local `cli_string_args.cjs` hook supports `text#` prefixes for explicit
+strings, without editing the installed CLI or touching signing code:
+`node --require ./scripts/cli_string_args.cjs CLI_PATH write ADDRESS open_pack --args negative GOALS text#2119 DEADLINE 7200`.
+Three-RFC comma-separated strings in the demo need no prefix. The compatibility
+unit test uses a synthetic parser and sends no transaction.
+
 ```powershell
 $deadline=[DateTimeOffset]::UtcNow.ToUnixTimeSeconds()+7200
 genlayer write ADDRESS open_pack --args demo 'Explains reservation of example.com example.net and example.org for documentation examples;Defines all three IPv4 TEST-NET address blocks reserved for documentation' '2119,2606,5737' $deadline 7200
@@ -145,6 +152,13 @@ not the CLI banner. `node scripts/check.mjs --success HASH` verifies metadata;
 `--source ADDRESS` compares deployed source with this repository. The pack verifier
 recomputes roots, bindings, freshness and every subset to verify optimality.
 See [LIVE_PROOFS.md](LIVE_PROOFS.md) for actual evidence status.
+
+Live StudioNet contract: [0x77d21ce3cbeb50CcaA8C50D6584fbD7EE891AEcE](https://explorer-studio.genlayer.com/address/0x77d21ce3cbeb50CcaA8C50D6584fbD7EE891AEcE).
+Nine finalized successful receipts cover deployment, source observations and two
+closed packs. The complete three-source pack selected RFCs 2606 and 5737 at
+15044 raw bytes, excluding irrelevant RFC 2119. The one-source negative pack
+closed UNCOVERED with no bundle. Deployed source equality and stored matrices,
+bindings, roots and optimality/infeasibility were independently checked.
 
 ## Optional Windows HTTPS fallback
 
