@@ -1,0 +1,8 @@
+{
+  "name": "source-cover-optimizer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Source-grounded minimum-byte documentation cover on GenLayer",
+  "dependencies": {"genlayer-js": "1.1.8"}
+}

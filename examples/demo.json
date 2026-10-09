@@ -1,0 +1,10 @@
+{
+  "requirements": [
+    "Explains reservation of example.com example.net and example.org for documentation examples",
+    "Defines all three IPv4 TEST-NET address blocks reserved for documentation"
+  ],
+  "rfcs": [2119, 2606, 5737],
+  "expected_coverage": {"2119": ["NO", "NO"], "2606": ["YES", "NO"], "5737": ["NO", "YES"]},
+  "expected_selected": [2606, 5737],
+  "note": "Expected results are test assertions only. Validators independently acquire and interpret full RFC bodies; no expected vector is submitted to the contract."
+}
